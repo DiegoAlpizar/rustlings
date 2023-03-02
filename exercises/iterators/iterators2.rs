@@ -5,12 +5,6 @@
 
 // I AM NOT DONE
 
-/**
- * This was my first solution;
- * aparently this is not the intended 'iterator' solution.
- * 
-**/
-
 // Step 1.
 // Complete the `capitalize_first` function.
 // "hello" -> "Hello"
@@ -18,7 +12,7 @@ pub fn capitalize_first(input: &str) -> String {
     let mut c = input.chars();
     match c.next() {
         None => String::new(),
-        Some(first) => format!( "{}{}" , first.to_ascii_uppercase() , &input[ 1 .. ] ) ,
+        Some(first) => format!( "{}{}" , first.to_ascii_uppercase() , c.as_str() ) ,
     }
 }
 
@@ -28,13 +22,11 @@ pub fn capitalize_first(input: &str) -> String {
 // ["hello", "world"] -> ["Hello", "World"]
 pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
     
-    let mut newWords    =   Vec::new() ;
+    let newWords    =   words.into_iter()
+                            .map( |word| capitalize_first( word ) )
+                            .collect()
+                            ;
     
-    for word in words
-    {
-        newWords.push( capitalize_first( word ) );
-    }
-    //vec![]
     newWords
 
 }
