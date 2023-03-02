@@ -3,7 +3,13 @@
 // can offer. Follow the steps to complete the exercise.
 // Execute `rustlings hint iterators2` or use the `hint` watch subcommand for a hint.
 
+// I AM NOT DONE
 
+/**
+ * This was my first solution;
+ * aparently this is not the intended 'iterator' solution.
+ * 
+**/
 
 // Step 1.
 // Complete the `capitalize_first` function.
@@ -12,7 +18,7 @@ pub fn capitalize_first(input: &str) -> String {
     let mut c = input.chars();
     match c.next() {
         None => String::new(),
-        Some(first) => format!( "{}{}" , first.to_ascii_uppercase() , c.as_str() ) ,
+        Some(first) => format!( "{}{}" , first.to_ascii_uppercase() , &input[ 1 .. ] ) ,
     }
 }
 
@@ -22,11 +28,13 @@ pub fn capitalize_first(input: &str) -> String {
 // ["hello", "world"] -> ["Hello", "World"]
 pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
     
-    let newWords    =   words.into_iter()
-                                            .map( |word| capitalize_first( word ) )
-                                            .collect()
-                                            ;
+    let mut newWords    =   Vec::new() ;
     
+    for word in words
+    {
+        newWords.push( capitalize_first( word ) );
+    }
+    //vec![]
     newWords
 
 }
@@ -37,12 +45,7 @@ pub fn capitalize_words_vector(words: &[&str]) -> Vec<String> {
 // ["hello", " ", "world"] -> "Hello World"
 pub fn capitalize_words_string(words: &[&str]) -> String {
     
-    let newSentence =   words.into_iter()
-                                        .map( |word| capitalize_first( word ) )
-                                        .collect()
-                                        ;
-    
-    newSentence
+    capitalize_words_vector( words ).concat()
 
 }
 
