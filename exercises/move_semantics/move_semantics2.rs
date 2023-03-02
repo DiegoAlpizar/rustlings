@@ -5,10 +5,10 @@
 // vec0 has length 3 content `[22, 44, 66]`
 // vec1 has length 4 content `[22, 44, 66, 88]`
 
-// I AM NOT DONE
+
 
 fn main() {
-    let vec0 = Vec::new();
+    let vec0 = Vec::< () >::new();
 
     // Do not move the following line!
     let mut vec1 = fill_vec(vec0);

@@ -3,6 +3,8 @@
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.From.html
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a hint.
 
+use std::num::ParseIntError;
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -37,9 +39,95 @@ impl Default for Person {
 
 // I AM NOT DONE
 
+fn checkName (firstTk : Option <&str>) -> Option <String> {
+
+    firstTk.filter( |s| !s.is_empty() )
+            .map( |s| s.to_string() )
+            
+    //firstTk.and_then( |s| (!s.is_empty()).then( || s.to_string() ) )
+
+    //firstTk.filter( |s| !s.is_empty() )
+    //        .and_then( |s| Some( s.to_string() ) )
+            
+    //let nameStr =   firstTk ? ;
+    //
+    //{!nameStr.is_empty()}
+    //                    .then( || nameStr.to_string() )
+
+}
+
+
+fn checkAge (secondTk : Option <&str>) -> Option <usize> {
+
+    //secondTk.
+
+    secondTk.and_then( |s| s.parse().ok() )
+
+    //let ageStr =   secondTk ? ;
+    //let age =   ageStr.parse().ok() ;
+    //
+    //age
+
+}
+
 impl From<&str> for Person {
+
     fn from(s: &str) -> Person {
+
+        if s.is_empty() { return  Person::default(); }
+        
+        let mut tokens  =   s.split( ',' ) ;
+        let firstToken  =   tokens.next() ;
+        let secondToken =   tokens.next_back() ;
+        
+        //let nameStr    =   firstToken.unwrap() ;
+        
+        //if nameStr.is_empty()       { return  Person::default(); }
+        //if secondToken.is_none()    { return  Person::default(); }
+        
+        //let parsedAge: Result<usize, std::num::ParseIntError> =   secondToken.unwrap().parse() ;
+        
+        //if parsedAge.is_err() { return  Person::default(); }
+        
+        let checkedName =   checkName( firstToken ) ;
+        let checkedAge  =   checkAge( secondToken ) ;
+
+        if let None = checkedAge    { return  Person::default(); }
+        if checkedName.is_none()    { return  Person::default(); }
+
+        let name    =   checkedName.unwrap() ;
+        let age =   checkedAge.unwrap() ;
+
+        Person  { name
+                , age
+                }
+        
+        /*
+        let mut tokens  =   s.split( ',' ) ;
+        let firstToken  =   tokens.next() ;
+        let secondToken =   tokens.next() ;
+
+        if firstToken.is_none() || secondToken.is_none()
+        {
+            return  Person::default() ;
+        }
+
+        let name    =   firstToken.unwrap().to_string() ;
+        let age =   secondToken.unwrap().parse().unwrap() ;
+        
+                */
+        
+        /*
+        let mut tokens   =   s.split( ',' ) ;
+        let firstToken    =   tokens.next() ;
+        let name    =   firstToken.unwrap_or( "John" ).to_string() ;
+        let secondToken  =   tokens.next() ;
+        let age  =   secondToken.unwrap_or( "30" ).parse().unwrap_or( 30 ) ;
+        
+        */
+        
     }
+
 }
 
 fn main() {
