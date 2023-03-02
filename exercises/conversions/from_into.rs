@@ -3,7 +3,8 @@
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.From.html
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a hint.
 
-use std::num::ParseIntError;
+
+use std::{num::ParseIntError, str::FromStr};
 
 #[derive(Debug)]
 struct Person {
@@ -45,14 +46,20 @@ impl From<&str> for Person {
 
         if s.is_empty() { return  Person::default(); }
         
-        let mut tokens  =   s.split( ',' ) ;
+        let mut tokens   =   s.split( ',' ) ;
         let firstToken  =   tokens.next() ;
         let secondToken =   tokens.next_back() ;
-        let nameStr     =   firstToken.unwrap() ;
+        let nameStr             =   firstToken.unwrap() ;
 
-        let name:       String                          = if !nameStr.is_empty()            { nameStr.to_string() } else { return  Person::default(); };
-        let parsedAge:  Result< usize , ParseIntError > = if let Some( tk ) = secondToken   { tk.parse() }          else { return  Person::default(); };
-        let age:        usize                           = if let Ok( age )  = parsedAge     { age }                 else { return  Person::default(); };
+        let name:       String                          = if !nameStr.is_empty()                { nameStr.to_string() } else { return  Person::default(); };
+
+        // Pass parse()'s error as default value if secondToken is None
+        // Where is `s` being taken from ??  -->    .---!---------.  firs closure arg takes no args!
+        let parsedAge   =   secondToken.map_or_else( || s.parse() , |s| s.parse() ) ;   // WTF
+        //                                          '---^---------'
+
+        //let parsedAge:  Result< usize , ParseIntError > = if let Some( tk ) = secondToken { tk.parse() }          else { return  Person::default(); };
+        let age:        usize                           = if let Ok( age ) = parsedAge   { age }                 else { return  Person::default(); };
         
         Person  { name
                 , age
