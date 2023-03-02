@@ -3,6 +3,8 @@
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.From.html
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a hint.
 
+use std::num::ParseIntError;
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -46,23 +48,19 @@ impl From<&str> for Person {
         let mut tokens  =   s.split( ',' ) ;
         let firstToken  =   tokens.next() ;
         let secondToken =   tokens.next_back() ;
-        
-        let nameStr    =   firstToken.unwrap() ;
-        
-        if nameStr.is_empty()       { return  Person::default(); }
-        if secondToken.is_none()    { return  Person::default(); }
-        
-        let parsedAge =   secondToken.unwrap().parse() ;
-        
-        if parsedAge.is_err() { return  Person::default(); }
-        
-        let name    =   nameStr.to_string() ;
-        let age =   parsedAge.unwrap() ;
+        let nameStr     =   firstToken.unwrap() ;
 
+        let name:       String                          = if !nameStr.is_empty()            { nameStr.to_string() } else { return  Person::default(); };
+        let parsedAge:  Result< usize , ParseIntError > = if let Some( tk ) = secondToken   { tk.parse() }          else { return  Person::default(); };
+        let age:        usize                           = if let Ok( age )  = parsedAge     { age }                 else { return  Person::default(); };
+        
         Person  { name
                 , age
                 }
         
+        //if nameStr.is_empty()       { return  Person::default(); }
+        //if secondToken.is_none()    { return  Person::default(); }
+        //if parsedAge.is_err() { return  Person::default(); }
         /*
         let mut tokens  =   s.split( ',' ) ;
         let firstToken  =   tokens.next() ;
