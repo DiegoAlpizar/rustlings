@@ -71,8 +71,6 @@ impl From<&str> for Person {
 
     fn from(s: &str) -> Person {
 
-        if s.is_empty() { return  Person::default(); }
-        
         let mut tokens  =   s.split( ',' ) ;
         let maybeNameToken  =   tokens.next() ;
         let maybeAgeToken =   tokens.next_back() ;
