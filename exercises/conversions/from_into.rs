@@ -3,6 +3,7 @@
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.From.html
 // Execute `rustlings hint from_into` or use the `hint` watch subcommand for a hint.
 
+
 #[derive(Debug)]
 struct Person {
     name: String,
@@ -37,6 +38,35 @@ impl Default for Person {
 
 // I AM NOT DONE
 
+fn checkName (maybeToken : Option <&str>) -> Option <String> {
+
+    maybeToken.filter( |s| !s.is_empty() )
+            .map( |s| s.to_string() )
+            
+    //firstTk.and_then( |s| (!s.is_empty()).then( || s.to_string() ) )
+
+    //firstTk.filter( |s| !s.is_empty() )
+    //        .and_then( |s| Some( s.to_string() ) )
+            
+    //let nameStr =   firstTk ? ;
+    //
+    //{!nameStr.is_empty()}
+    //                    .then( || nameStr.to_string() )
+
+}
+
+
+fn checkAge (maybeToken : Option <&str>) -> Option <usize> {
+
+    maybeToken.and_then( |s| s.parse().ok() )
+
+    //let ageStr =   maybeToken ? ;
+    //let age =   ageStr.parse().ok() ;
+    //
+    //age
+
+}
+
 impl From<&str> for Person {
 
     fn from(s: &str) -> Person {
@@ -44,48 +74,20 @@ impl From<&str> for Person {
         if s.is_empty() { return  Person::default(); }
         
         let mut tokens  =   s.split( ',' ) ;
-        let firstToken  =   tokens.next() ;
-        let secondToken =   tokens.next_back() ;
+        let maybeNameToken  =   tokens.next() ;
+        let maybeAgeToken =   tokens.next_back() ;
+        let maybeName =   checkName( maybeNameToken ) ;
+        let maybeAge  =   checkAge( maybeAgeToken ) ;
         
-        let nameStr    =   firstToken.unwrap() ;
+        if let None = maybeAge    { return  Person::default(); }
+        if maybeName.is_none()    { return  Person::default(); }
         
-        if nameStr.is_empty()       { return  Person::default(); }
-        if secondToken.is_none()    { return  Person::default(); }
+        let name    =   maybeName.unwrap() ;
+        let age =   maybeAge.unwrap() ;
         
-        let parsedAge =   secondToken.unwrap().parse() ;
-        
-        if parsedAge.is_err() { return  Person::default(); }
-        
-        let name    =   nameStr.to_string() ;
-        let age =   parsedAge.unwrap() ;
-
         Person  { name
                 , age
                 }
-        
-        /*
-        let mut tokens  =   s.split( ',' ) ;
-        let firstToken  =   tokens.next() ;
-        let secondToken =   tokens.next() ;
-
-        if firstToken.is_none() || secondToken.is_none()
-        {
-            return  Person::default() ;
-        }
-
-        let name    =   firstToken.unwrap().to_string() ;
-        let age =   secondToken.unwrap().parse().unwrap() ;
-        
-                */
-        
-        /*
-        let mut tokens   =   s.split( ',' ) ;
-        let firstToken    =   tokens.next() ;
-        let name    =   firstToken.unwrap_or( "John" ).to_string() ;
-        let secondToken  =   tokens.next() ;
-        let age  =   secondToken.unwrap_or( "30" ).parse().unwrap_or( 30 ) ;
-        
-        */
         
     }
 
