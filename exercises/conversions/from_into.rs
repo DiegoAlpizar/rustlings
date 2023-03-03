@@ -41,8 +41,6 @@ impl From<&str> for Person {
 
     fn from(s: &str) -> Person {
 
-        if s.is_empty() { return  Person::default(); }
-        
         let mut tokens  =   s.split( ',' ) ;
         let firstToken  =   tokens.next() ;
         let secondToken =   tokens.next_back() ;
