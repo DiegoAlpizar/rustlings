@@ -55,9 +55,18 @@ impl FromStr for Person {
         let mut tokens  =   s.split( ',' ) ;
         let maybeNameToken   =   tokens.next() ;
         let maybeAgeToken    =   tokens.next() ;
+        let maybeExtraGarbage   =   tokens.next() ;
 
+        if maybeExtraGarbage.is_some()  { return  Err( ParsePersonError::BadLen ); }
+        
         let name    =   maybeNameToken.unwrap().to_string() ;
-        let age =   maybeAgeToken.unwrap().parse().map_err( |e| ParsePersonError::ParseInt( e ) ) ? ;
+
+        if name.is_empty()  { return  Err( ParsePersonError::NoName ) }
+
+        let age =   maybeAgeToken.ok_or( ParsePersonError::BadLen ) ?
+                                        .parse()
+                                        .map_err( |e| ParsePersonError::ParseInt( e ) ) ?
+                                        ;
         
         Ok( Person { name , age } )
 
