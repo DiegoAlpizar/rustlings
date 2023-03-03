@@ -57,12 +57,7 @@ impl FromStr for Person {
         let maybeAgeToken    =   tokens.next() ;
 
         let name    =   maybeNameToken.unwrap().to_string() ;
-        
-        let maybeAge    =   maybeAgeToken.unwrap().parse() ;
-
-        if maybeAge.is_err()    { return  Err( ParsePersonError::ParseInt( maybeAge.unwrap_err() ) ) }
-
-        let age =   maybeAge.unwrap() ;
+        let age =   maybeAgeToken.unwrap().parse().map_err( |e| ParsePersonError::ParseInt( e ) ) ? ;
         
         Ok( Person { name , age } )
 
