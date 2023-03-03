@@ -58,12 +58,10 @@ fn checkName (maybeToken : Option <&str>) -> Option <String> {
 
 fn checkAge (maybeToken : Option <&str>) -> Option <usize> {
 
-    maybeToken.and_then( |s| s.parse().ok() )
-
-    //let ageStr =   maybeToken ? ;
-    //let age =   ageStr.parse().ok() ;
-    //
-    //age
+    let ageStr =   maybeToken ? ;
+    let age =   ageStr.parse().ok() ;
+    
+    age
 
 }
 
