@@ -4,6 +4,7 @@
 // Additionally, upon implementing FromStr, you can use the `parse` method
 // on strings to generate an object of the implementor type.
 // You can read more about it at https://doc.rust-lang.org/std/str/trait.FromStr.html
+
 // Execute `rustlings hint from_str` or use the `hint` watch subcommand for a hint.
 
 use std::num::ParseIntError;
@@ -44,9 +45,29 @@ enum ParsePersonError {
 // string error message, you can do so via just using return `Err("my error message".into())`.
 
 impl FromStr for Person {
-    type Err = ParsePersonError;
+
+    type Err = ParsePersonError ;
+    
     fn from_str(s: &str) -> Result<Person, Self::Err> {
+
+        if s.is_empty() { return  Err( ParsePersonError::Empty ); }
+
+        let mut tokens  =   s.split( ',' ) ;
+        let maybeNameToken   =   tokens.next() ;
+        let maybeAgeToken    =   tokens.next() ;
+
+        let name    =   maybeNameToken.unwrap().to_string() ;
+        
+        let maybeAge    =   maybeAgeToken.unwrap().parse() ;
+
+        if maybeAge.is_err()    { return  Err( ParsePersonError::ParseInt( maybeAge.unwrap_err() ) ) }
+
+        let age =   maybeAge.unwrap() ;
+        
+        Ok( Person { name , age } )
+
     }
+
 }
 
 fn main() {
