@@ -50,18 +50,22 @@ impl FromStr for Person {
     
     fn from_str(s: &str) -> Result<Person, Self::Err> {
 
-        if s.is_empty() { return  Err( ParsePersonError::Empty ); }
+        if s.is_empty()                     { return  Err( ParsePersonError::Empty ); }
+        if s.matches( ',' ).count() > 1     { return  Err( ParsePersonError::BadLen ); }
 
         let mut tokens  =   s.split( ',' ) ;
         let maybeNameToken   =   tokens.next() ;
         let maybeAgeToken    =   tokens.next() ;
-
-        let name    =   maybeNameToken.unwrap().to_string() ;
+        let nameStr    =   maybeNameToken.unwrap() ;
+        
+        if nameStr.is_empty()       { return  Err( ParsePersonError::NoName ); }
+        if maybeAgeToken.is_none()  { return  Err( ParsePersonError::BadLen ); }        
         
         let maybeAge    =   maybeAgeToken.unwrap().parse() ;
-
-        if maybeAge.is_err()    { return  Err( ParsePersonError::ParseInt( maybeAge.unwrap_err() ) ) }
-
+        
+        if maybeAge.is_err()    { return  Err( ParsePersonError::ParseInt( maybeAge.unwrap_err() ) ); }
+        
+        let name    =   nameStr.to_string() ;
         let age =   maybeAge.unwrap() ;
         
         Ok( Person { name , age } )
