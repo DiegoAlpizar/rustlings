@@ -40,18 +40,10 @@ impl Default for Person {
 
 fn checkName (maybeToken : Option <&str>) -> Option <String> {
 
-    maybeToken.filter( |s| !s.is_empty() )
-            .map( |s| s.to_string() )
-            
-    //firstTk.and_then( |s| (!s.is_empty()).then( || s.to_string() ) )
-
-    //firstTk.filter( |s| !s.is_empty() )
-    //        .and_then( |s| Some( s.to_string() ) )
-            
-    //let nameStr =   firstTk ? ;
-    //
-    //{!nameStr.is_empty()}
-    //                    .then( || nameStr.to_string() )
+    let nameStr =   maybeToken ? ;
+    
+    {!nameStr.is_empty()}
+                        .then( || nameStr.to_string() )
 
 }
 
