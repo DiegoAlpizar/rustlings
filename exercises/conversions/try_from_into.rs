@@ -35,23 +35,54 @@ enum IntoColorError {
 // Also note that correct RGB color values must be integers in the 0..=255 range.
 
 // Tuple implementation
-impl TryFrom<(i16, i16, i16)> for Color {
+impl TryFrom< (i16 , i16 , i16) > for Color {
+
     type Error = IntoColorError;
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+
+    fn try_from (tuple: (i16, i16, i16)) -> Result <Self , Self::Error> {
+
+        //if tuple.
+        //Err( IntoColorError::IntConversion )
+
+        Ok( Color { red: 0, green: 0, blue: 0 } )
+
     }
+
 }
 
 // Array implementation
 impl TryFrom<[i16; 3]> for Color {
-    type Error = IntoColorError;
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+
+    type Error = IntoColorError ;
+
+    fn try_from(arr: [i16; 3]) -> Result <Self , Self::Error> {
+
+        let mut iter_   =   arr.into_iter() ;
+
+        if iter_.any( |num| num.is_negative() || num > 256 )
+        {
+            return  Err( Self::Error::IntConversion ) ;
+        }
+        
+        let checkedArr : [u8 ; 3]  =   arr.map( |num: i16| num as u8 ) ;
+        
+        Ok( Color   { red   : checkedArr[ 0 ]
+                    , green : checkedArr[ 1 ]
+                    , blue  : checkedArr[ 2 ]
+                    }
+        )
+
     }
 }
 
 // Slice implementation
 impl TryFrom<&[i16]> for Color {
+
     type Error = IntoColorError;
+
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+
+        Ok( Color { red: 0, green: 0, blue: 0 } )
     }
 }
 
