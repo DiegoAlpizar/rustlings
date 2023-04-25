@@ -59,7 +59,7 @@ impl TryFrom<[i16; 3]> for Color {
 
         let mut iter_   =   arr.into_iter() ;
 
-        if iter_.any( |num| num.is_negative() || num > 256 )
+        if iter_.any( |num| num.is_negative()  ||  num > 256 )
         {
             return  Err( Self::Error::IntConversion ) ;
         }
@@ -82,7 +82,24 @@ impl TryFrom<&[i16]> for Color {
 
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
 
-        Ok( Color { red: 0, green: 0, blue: 0 } )
+        if slice.len() != 3  { return  Err( IntoColorError::BadLen ); }
+        
+        let mut iter   =   slice.into_iter() ;
+        
+        if iter.any( |num| num.is_negative()  ||  num > &256 )
+        {
+            return  Err( IntoColorError::IntConversion ) ;
+        }
+        
+        
+        let iter =   slice.into_iter() ;
+        let vec : Vec <u8>   =   iter.map( |num| *num as u8 ).collect() ;
+        let red =   vec[ 0 ] ;
+        let green   =   vec[ 1 ] ;
+        let blue    =   vec[ 2 ] ;
+
+        Ok( Color { red , green , blue } )
+
     }
 }
 
