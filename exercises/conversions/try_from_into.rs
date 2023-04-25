@@ -64,13 +64,13 @@ impl TryFrom<[i16; 3]> for Color {
             return  Err( Self::Error::IntConversion ) ;
         }
         
-        let checkedArr : [u8 ; 3]  =   arr.map( |num: i16| num as u8 ) ;
         
-        Ok( Color   { red   : checkedArr[ 0 ]
-                    , green : checkedArr[ 1 ]
-                    , blue  : checkedArr[ 2 ]
-                    }
-        )
+        let checkedArr : [u8 ; 3]  =   arr.map( |num: i16| num as u8 ) ;
+        let red     : u8    =   checkedArr[ 0 ] ;
+        let green   : u8    =   checkedArr[ 1 ] ;
+        let blue    : u8    =   checkedArr[ 2 ] ;
+
+        Ok( Color { red , green , blue } )
 
     }
 }
