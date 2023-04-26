@@ -41,10 +41,9 @@ impl TryFrom< (i16 , i16 , i16) > for Color {
 
     fn try_from (tuple: (i16, i16, i16)) -> Result <Self , Self::Error> {
 
-        //if tuple.
-        //Err( IntoColorError::IntConversion )
+        let arr : [i16; 3]   =   [ tuple.0 , tuple.1 , tuple.2 ] ;
 
-        Ok( Color { red: 0, green: 0, blue: 0 } )
+        Color::try_from( arr )
 
     }
 
