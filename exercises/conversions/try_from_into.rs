@@ -5,7 +5,7 @@
 // You can read more about it at https://doc.rust-lang.org/std/convert/trait.TryFrom.html
 // Execute `rustlings hint try_from_into` or use the `hint` watch subcommand for a hint.
 
-use std::convert::{TryFrom, TryInto};
+use std::{convert::{TryFrom, TryInto}, slice::Iter};
 
 #[derive(Debug, PartialEq)]
 struct Color {
@@ -23,7 +23,7 @@ enum IntoColorError {
     IntConversion,
 }
 
-// I AM NOT DONE
+
 
 // Your task is to complete this implementation
 // and return an Ok result of inner type Color.
@@ -56,18 +56,18 @@ impl TryFrom<[i16; 3]> for Color {
 
     fn try_from(arr: [i16; 3]) -> Result <Self , Self::Error> {
 
-        let mut iter_   =   arr.into_iter() ;
+        let mut iter_: std::array::IntoIter<i16, 3>   =   arr.into_iter() ;
 
-        if iter_.any( |num| num.is_negative()  ||  num > 256 )
+        if iter_.any( |num: i16| num.is_negative()  ||  num > 256 )
         {
             return  Err( Self::Error::IntConversion ) ;
         }
         
         
-        let checkedArr : [u8 ; 3]  =   arr.map( |num: i16| num as u8 ) ;
-        let red     : u8    =   checkedArr[ 0 ] ;
-        let green   : u8    =   checkedArr[ 1 ] ;
-        let blue    : u8    =   checkedArr[ 2 ] ;
+        let checkedArr  : [u8 ; 3]  =   arr.map( |num: i16| num as u8 ) ;
+        let red         : u8        =   checkedArr[ 0 ] ;
+        let green       : u8        =   checkedArr[ 1 ] ;
+        let blue        : u8        =   checkedArr[ 2 ] ;
 
         Ok( Color { red , green , blue } )
 
@@ -83,19 +83,19 @@ impl TryFrom<&[i16]> for Color {
 
         if slice.len() != 3  { return  Err( IntoColorError::BadLen ); }
         
-        let mut iter   =   slice.into_iter() ;
+        let mut iter: Iter<i16>   =   slice.into_iter() ;
         
-        if iter.any( |num| num.is_negative()  ||  num > &256 )
+        if iter.any( |num: &i16| num.is_negative()  ||  num > &256 )
         {
             return  Err( IntoColorError::IntConversion ) ;
         }
         
         
-        let iter =   slice.into_iter() ;
-        let vec : Vec <u8>   =   iter.map( |num| *num as u8 ).collect() ;
-        let red =   vec[ 0 ] ;
-        let green   =   vec[ 1 ] ;
-        let blue    =   vec[ 2 ] ;
+        let iter    : Iter <i16>    =   slice.into_iter() ;
+        let vec     : Vec <u8>      =   iter.map( |num: &i16| *num as u8 ).collect() ;
+        let red     : u8            =   vec[ 0 ] ;
+        let green   : u8            =   vec[ 1 ] ;
+        let blue    : u8            =   vec[ 2 ] ;
 
         Ok( Color { red , green , blue } )
 
